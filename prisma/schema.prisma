@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+// Define the Users table
+model User {
+  user_id          Int       @id @default(autoincrement())
+  user_fullname    String    @db.VarChar(255)
+  user_email       String    @db.VarChar(255)
+  user_password    String    @db.VarChar(255)
+  user_phoneNumber String    @db.VarChar(255)
+  user_avatar      String?   @db.VarChar(255)
+  projects         Project[] @relation("UserProjects")
+  tasks            Task[]    @relation("AssignedTasksToUser")
+}
+
+// Define the Projects table
+model Project {
+  project_id         Int       @id @default(autoincrement())
+  project_name       String    @db.VarChar(255)
+  project_description String?   @db.Text
+  project_deadline   DateTime? @db.DateTime
+  project_start_date DateTime? @db.DateTime
+  project_end_date   DateTime? @db.DateTime
+  project_status     String?   @db.VarChar(50)
+  assigned_to        Int
+  user              User      @relation("UserProjects", fields: [assigned_to], references: [user_id])
+  tasks             Task[]    @relation("ProjectTasks")
+}
+
+// Define the Tasks table
+model Task {
+  task_id            Int       @id @default(autoincrement())
+  task_name          String    @db.VarChar(255)
+  task_description   String?   @db.Text
+  task_due_date      DateTime? @db.DateTime
+  task_status        String?   @db.VarChar(50)
+  task_assigned_to   Int?
+  project_id         Int?
+  user              User?     @relation("AssignedTasksToUser", fields: [task_assigned_to], references: [user_id])
+  project           Project?  @relation("ProjectTasks", fields: [project_id], references: [project_id])
+}
