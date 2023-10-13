@@ -12,24 +12,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'static')))
 
-const prisma = new PrismaClient()
-// const users = require('./routes/users')
+const users = require('./routes/user')
 // const project = require('./routes/project')
-// app.use(users)
-// app.use(project)
-app.get('/users', async function (req: Request, res: Response, next: NextFunction){
-    const allUser = await prisma.user.findMany()
-    res.json({users:allUser})
-})
-app.get('/user', async function (req: Request, res: Response, next: NextFunction){
-    const { userId } = req.body
-    const allUser = await prisma.user.findUnique({
-        where:{
-            user_id: userId
-        }
-    })
-    res.json({users:allUser})
-})
+app.use(users)
+// app.use(project)s
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:3000`)
 })

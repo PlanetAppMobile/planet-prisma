@@ -7,13 +7,13 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://u350327849_planet:Pf10100667@31.220.110.101:3306/u350327849_planet_backend"
 }
 // Define the Users table
 model User {
   user_id          Int       @id @default(autoincrement())
   user_fullname    String    @db.VarChar(255)
-  user_email       String    @db.VarChar(255)
+  user_email       String    @db.VarChar(255) @unique
   user_password    String    @db.VarChar(255)
   user_phoneNumber String    @db.VarChar(255)
   user_avatar      String?   @db.VarChar(255)
