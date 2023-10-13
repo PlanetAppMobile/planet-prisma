@@ -19,6 +19,17 @@ model User {
   user_avatar      String?   @db.VarChar(255)
   projects         Project[] @relation("UserProjects")
   tasks            Task[]    @relation("AssignedTasksToUser")
+  notes            Note[]    @relation("UserNotes")
+}
+
+model Note {
+  note_id      Int       @id @default(autoincrement())
+  topic        String    @db.VarChar(255)
+  description  String?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  user_id      Int       
+  user         User      @relation("UserNotes", fields: [user_id], references: [user_id])
 }
 
 // Define the Projects table

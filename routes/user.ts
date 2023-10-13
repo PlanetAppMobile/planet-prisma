@@ -30,7 +30,7 @@ router.get('/user/:userId', async function (req: Request, res: Response, next: N
 })
 router.post('/user', async function (req: Request, res: Response, next: NextFunction) {
     try {
-        const { fullName, email, password, phoneNumber} = req.body
+        const { fullName, email, password, phoneNumber } = req.body
         const user = await prisma.user.create({
             data: {
                 user_fullname: fullName,
