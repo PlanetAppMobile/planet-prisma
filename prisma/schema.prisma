@@ -20,8 +20,16 @@ model User {
   projects         Project[] @relation("UserProjects")
   tasks            Task[]    @relation("AssignedTasksToUser")
   notes            Note[]    @relation("UserNotes")
+  todolist         TodoList[]    @relation("TodoList")
 }
-
+model TodoList {
+  todo_id      Int       @id @default(autoincrement())
+  todo_desc    String    @db.VarChar(255)
+  todo_checked Boolean
+  todo_date    DateTime @db.Date
+  user_id      Int       
+  user         User      @relation("TodoList", fields: [user_id], references: [user_id])
+}
 model Note {
   note_id      Int       @id @default(autoincrement())
   topic        String    @db.VarChar(255)

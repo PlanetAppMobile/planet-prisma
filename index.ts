@@ -13,8 +13,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'static')))
 
 const users = require('./routes/user')
+const todolist = require('./routes/todolist')
 // const project = require('./routes/project')
 app.use(users)
+app.use(todolist)
 // app.use(project)s
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:3000`)
