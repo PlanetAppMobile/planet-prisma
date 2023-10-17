@@ -43,5 +43,4 @@ router.post("/project", async function (req: Request, res: Response, next: NextF
     }
 });
 
-router.post()
 module.exports = router;
