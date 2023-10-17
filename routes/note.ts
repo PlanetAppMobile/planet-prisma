@@ -23,7 +23,7 @@ router.get('/note/:userId/:noteId', async function (req: Request, res: Response,
         if (!note) {
             return res.status(404).json({ error: 'Note not found' });
         }
-        res.json({ notes: note })
+        res.json(note)
     } catch (error) {
         next(error)
     } finally {
@@ -53,7 +53,6 @@ router.post('/note', async (req: Request, res: Response, next: NextFunction) => 
         const { topic, description, created_at, updated_at, user_id } = req.body;
         const createDate = new Date(created_at).toISOString();
         const updateDate = new Date(updated_at).toISOString();
-        // Assuming you have already initialized Prisma and have a 'Note' model
         const note = await prisma.note.create({
             data: {
                 topic,
@@ -64,9 +63,9 @@ router.post('/note', async (req: Request, res: Response, next: NextFunction) => 
             },
         });
 
-        res.status(201).json(note); // Return the created note as a JSON response
+        res.status(201).json(note); 
     } catch (error) {
-        next(error); // Pass any errors to the error handling middleware
+        next(error); 
     }
 });
 router.put("/note/:userId/:noteId", async (req: Request, res: Response, next: NextFunction) => {
