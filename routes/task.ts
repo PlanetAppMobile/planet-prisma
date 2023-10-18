@@ -88,5 +88,52 @@ router.put("/task/:taskId", async (req: Request, res: Response, next: NextFuncti
         res.status(500).json({ error: "Failed to update to-do item" });
     }
 });
+router.delete("/task/:taskId", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { taskId } = req.params;
+
+        const deletedTask = await prisma.task.delete({
+            where: {
+                task_id: parseInt(taskId),
+            },
+        });
+
+        if (deletedTask) {
+            res.status(204).end(); 
+        } else {
+            res.status(404).json({ error: "Task item not found" });
+        }
+    } catch (error) {
+        console.error("Error deleting Task item:", error);
+        res.status(500).json({ error: "Failed to delete Task item" });
+    }
+});
+router.put("/endTask/:projectId", async (req: Request, res: Response, next: NextFunction) => {
+    const projectId = parseInt(req.params.projectId);
+
+    try {
+        const tasks = await prisma.task.findMany({
+            where: {
+                project_id: projectId,
+            },
+        });
+
+        for (const task of tasks) {
+            await prisma.task.update({
+                where: {
+                    task_id: task.task_id,
+                },
+                data: {
+                    task_status: "done",
+                },
+            });
+        }
+
+        res.json({ message: "Task statuses updated successfully" });
+    } catch (error) {
+        console.error("Error updating task statuses:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 module.exports = router;
