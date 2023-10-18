@@ -21,13 +21,13 @@ router.post('/login', async function (req: Request, res: Response, next: NextFun
       }
     });
     if (!user) {
-      return res.status(401).json({ error: "User not found" });
+      return res.status(200).json({ error: "User not found" });
     }
     console.log(user.user_id)
 
 
     if (user.user_password !== password) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(200).json({ error: "Invalid password" });
     }
 
     res.status(200).json({ message: "Login successful" });
