@@ -46,6 +46,7 @@ model Project {
   project_name       String    @db.VarChar(255)
   project_description String?   @db.Text
   project_deadline   DateTime? @db.DateTime
+  project_rating     Int? 
   project_start_date DateTime? @db.DateTime
   project_end_date   DateTime? @db.DateTime
   project_status     String?   @db.VarChar(50)
