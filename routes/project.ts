@@ -42,5 +42,26 @@ router.post("/project", async function (req: Request, res: Response, next: NextF
         res.json(error);
     }
 });
+router.delete("/project/:projectId", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { projectId } = req.params;
+
+        await prisma.task.deleteMany({
+            where: {
+                project_id: parseInt(projectId),
+            },
+        });
+        const deletedProject = await prisma.project.delete({
+            where: {
+                project_id: parseInt(projectId),
+            },
+        });
+
+        res.json({ message: "Project deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 module.exports = router;

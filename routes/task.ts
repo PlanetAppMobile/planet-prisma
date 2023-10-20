@@ -108,8 +108,10 @@ router.delete("/task/:taskId", async (req: Request, res: Response, next: NextFun
         res.status(500).json({ error: "Failed to delete Task item" });
     }
 });
-router.put("/endTask/:projectId", async (req: Request, res: Response, next: NextFunction) => {
+router.put("/endTask/:projectId/:rating", async (req: Request, res: Response, next: NextFunction) => {
     const projectId = parseInt(req.params.projectId);
+    const rating = parseInt(req.params.rating);
+    const end_date = new Date().toISOString()
 
     try {
         const tasks = await prisma.task.findMany({
@@ -128,6 +130,16 @@ router.put("/endTask/:projectId", async (req: Request, res: Response, next: Next
                 },
             });
         }
+        await prisma.project.update({
+            where: {
+                project_id: projectId,
+            },
+            data: {
+                project_status: "Done",
+                project_rating: rating,
+                project_end_date: end_date
+            },
+        });
 
         res.json({ message: "Task statuses updated successfully" });
     } catch (error) {
