@@ -73,7 +73,6 @@ router.put("/note/:userId/:noteId", async (req: Request, res: Response, next: Ne
         const noteId: number = parseInt(req.params.noteId);
         const userId: number = parseInt(req.params.userId);
         const { topic, description, created_at, updated_at, user_id } = req.body;
-        const createDate = new Date(created_at).toISOString();
         const updateDate = new Date(updated_at).toISOString();
         const updatedNote = await prisma.note.update({
             where: {
@@ -83,7 +82,6 @@ router.put("/note/:userId/:noteId", async (req: Request, res: Response, next: Ne
             data: {
                 topic,
                 description,
-                created_at : createDate,
                 updated_at : updateDate,
                 user_id 
             },
