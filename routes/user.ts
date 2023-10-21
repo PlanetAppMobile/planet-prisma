@@ -30,7 +30,7 @@ router.post('/login', async function (req: Request, res: Response, next: NextFun
       return res.status(200).json({ error: "Invalid password" });
     }
 
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ message: "Login successful", userId: user.user_id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

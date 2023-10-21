@@ -4,8 +4,8 @@ const express = require("express");
 const router = express.Router();
 
 const prisma = new PrismaClient();
-router.get("/project", async function (req: Request, res: Response, next: NextFunction) {
-    const userId = req.body.userId;
+router.get("/project/:userId", async function (req: Request, res: Response, next: NextFunction) {
+    const userId = parseInt(req.params.userId);
     
     try {
         const projects = await prisma.project.findMany({
