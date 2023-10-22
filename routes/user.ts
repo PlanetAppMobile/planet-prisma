@@ -74,4 +74,23 @@ router.post('/user', async function (req: Request, res: Response, next: NextFunc
     await prisma.$disconnect();
   }
 })
+router.put('/user', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId, fullName, email, phoneNumber } = req.body;
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id: userId }, // Assuming 'id' is the primary key for users
+      data: {
+        user_fullname: fullName,
+        user_email: email,
+        user_phoneNumber: phoneNumber
+      }
+    });
+
+    res.json(updatedUser); // Return the updated user as a JSON response
+  } catch (error) {
+    next(error); // Pass any errors to the error handling middleware
+  }
+});
+
 module.exports = router;
