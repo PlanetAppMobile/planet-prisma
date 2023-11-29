@@ -92,5 +92,26 @@ router.put('/user', async (req: Request, res: Response, next: NextFunction) => {
     next(error); // Pass any errors to the error handling middleware
   }
 });
+router.put('/user/changepassword',  async (req: Request, res: Response, next: NextFunction)=>{
+  try{
+    const { email, password } = req.body
+    const updatedUser = await prisma.user.update({
+      where: { user_email: email },
+      data: {
+        user_password: password,
+      },
+    });
+    if (updatedUser) {
+      res.status(200).json({ message: 'Password changed successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  }catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred' });
+  } finally {
+    await prisma.$disconnect(); // Disconnect from the Prisma client
+  }
+})
 
 module.exports = router;
